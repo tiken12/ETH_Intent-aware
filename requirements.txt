@@ -1,0 +1,13 @@
+fastapi==0.115.0
+uvicorn[standard]==0.30.6
+pydantic==2.9.2
+python-dotenv==1.0.1
+PyYAML==6.0.2
+web3==6.20.3
+eth-account==0.13.4
+eth-abi==5.1.0
+rlp==4.0.0
+networkx==3.3
+sqlalchemy==2.0.36
+requests==2.32.3
+pytest==8.2.1
