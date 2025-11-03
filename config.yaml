@@ -23,3 +23,24 @@ crosschain:
   probabilistic:
     tof_seconds: 1800                        # 30 min default window
     amount_tol_bps: 50                       # 0.5% tolerance
+
+bridges:
+  # Add multiple adapters here. This is one example for OP Bedrock deposits (L1 -> L2).
+  - name: base_deposit_erc20_v2
+    src_chain: 1           # Ethereum mainnet
+    dst_chain: 8453          # 10 for Optimism / 8453 for Base
+    src_address: "0x3154Cf16ccdb4C6d922629664174b904d80F2C35"     # fill from docs @ https://docs.base.org/base-chain/network-information/base-contracts
+    event_signature: "ERC20DepositInitiated(address,address,address,address,uint256,bytes)"
+    # how to extract fields from the decoded log
+    fields:
+      token: "l1Token"
+      amount: "amount"
+      from: "from"
+      to: "to"
+      # Will build a deterministic messageId from these fields
+      message_id_components: ["l1Token","l2Token","from","to","amount","extraData"]
+      indexed: ["l1Token","l2Token","from"]
+      data:    ["to","amount","extraData"]
+    # block scan window (you can tune later)
+    from_block: "latest-400000"
+    to_block: "latest"

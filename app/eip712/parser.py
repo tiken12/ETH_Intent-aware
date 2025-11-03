@@ -3,15 +3,19 @@ from eth_account.messages import encode_structured_data
 from app.core.utils import stable_hash
 
 def eip712_hash(typed: EIP712TypedData) -> str:
-    # Convert to dict for encode_structured_data
     data = {
         "types": typed.types,
         "primaryType": typed.primaryType,
         "domain": typed.domain.model_dump(),
         "message": typed.message
     }
-    msg = encode_structured_data(primitive=data)
-    return "0x" + msg.hash.hex()
+    try:
+        # eth_account is strict; if types/domain/message mismatch, this can raise
+        msg = encode_structured_data(primitive=data)
+        return "0x" + msg.hash.hex()
+    except Exception:
+        # Fall back to a stable structural hash so the API never 500s
+        return stable_hash(data)
 
 def infer_permit_like(typed: EIP712TypedData) -> bool:
     fields = set(k.lower() for k in typed.message.keys())
