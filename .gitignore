@@ -1,2 +1,16 @@
 .env
 .venv
+*.key
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+env/
+build/
+dist/
+.idea/
+.vscode/
+*.log
+config.yaml
+instance/
+.DS_Store
